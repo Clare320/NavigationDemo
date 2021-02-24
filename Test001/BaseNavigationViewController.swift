@@ -14,7 +14,7 @@ class BaseNavigationViewController: UINavigationController, UINavigationControll
 
         // Do any additional setup after loading the view.
         
-        delegate = self
+//        delegate = self
         interactivePopGestureRecognizer?.delegate = nil
     }
     

@@ -18,6 +18,29 @@ class FirstViewController: BaseViewController {
     }
     
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+//        navigationController?.setNavigationBarHidden(false, animated: false)
+        
+        DispatchQueue.main.async {
+            print("first----async willDisappear--")
+            self.navigationController?.setNavigationBarHidden(false, animated: false)
+        }
+        
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()) {
+//            self.navigationController?.setNavigationBarHidden(false, animated: false)
+//        }
+    }
+    
+    
+    
     /*
     // MARK: - Navigation
 
