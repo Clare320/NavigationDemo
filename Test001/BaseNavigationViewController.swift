@@ -15,18 +15,18 @@ class BaseNavigationViewController: UINavigationController, UINavigationControll
         // Do any additional setup after loading the view.
         
         delegate = self
+        interactivePopGestureRecognizer?.delegate = nil
     }
     
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
-        if viewControllers.count >= 1 {
-            let button = UIButton(type: .system)
-            button.setTitle("返回", for: .normal)
-            button.sizeToFit()
-            button.addTarget(self, action: #selector(back), for: .touchUpInside)
-            viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
-            viewController.hidesBottomBarWhenPushed = true
-        }
-        
+//        if viewControllers.count >= 1 {
+//            let button = UIButton(type: .system)
+//            button.setTitle("返回", for: .normal)
+//            button.sizeToFit()
+//            button.addTarget(self, action: #selector(back), for: .touchUpInside)
+//            viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+//        }
+        viewController.hidesBottomBarWhenPushed = true
         super.pushViewController(viewController, animated: animated)
     }
     
@@ -66,5 +66,11 @@ class BaseNavigationViewController: UINavigationController, UINavigationControll
  3. FDFullScreen
  
  1. 为啥 UINavigationController 不论是 init 还是使用直接构造方法，第一个 VC 都是压栈；
+    保证第一个VC也受控，受代理逻辑管控
+ 
  2. push前创建 UIBarButtonItem 和 viewDidLoad再创建 有什么区别
+ 创建的时机不一样，
+ 先执行pushViewController 再执行要Push ViewController的viewDidLoad方法
+ 使用viewController变量后才会进入到对应ViewController生命周期
+ 只构造UIViewController，是不会进入到生命周期，执行完ThirdViewController 并没有走viewDidLoad方法, 当使用这个VC时才会走生命周期
  */

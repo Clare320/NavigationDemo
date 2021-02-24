@@ -18,26 +18,44 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate {
         
         view.backgroundColor = .white
         
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
+//        navigationController?.interactivePopGestureRecognizer?.delegate = self
         
         setupContents()
+        setupBackButtonItem()
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        print("\(title ?? "vc")-----\(#function)")
 //        if hideNavigaionBar {
 //            navigationController?.navigationBar.isHidden = true
 //        }
-//    }
-//    
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        print("\(title ?? "vc")-----\(#function)")
 //        if hideNavigaionBar {
 //            navigationController?.navigationBar.isHidden = false
 //        }
-//    }
+    }
+    
+    func setupBackButtonItem() {
+        if navigationController?.viewControllers.count ?? 0 < 1 {
+            return
+        }
+        let button = UIButton(type: .system)
+        button.setTitle("返回", for: .normal)
+        button.sizeToFit()
+        button.addTarget(self, action: #selector(back), for: .touchUpInside)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+    }
+    
+    @objc func back() {
+        navigationController?.popViewController(animated: true)
+    }
     
     func setupContents() {
         let button = UIButton(type: .system)
@@ -49,7 +67,8 @@ class BaseViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @objc func pushThird() {
-        navigationController?.pushViewController(ThirdViewController(), animated: true)
+        let vc = ThirdViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     /*
