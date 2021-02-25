@@ -29,7 +29,7 @@ class ThirdViewController: BaseViewController {
 //        navigationController?.setNavigationBarHidden(false, animated: false)
         
         DispatchQueue.main.async {
-            print("-------third async disappear-----")
+            print("-------third  async disappear-----")
             self.navigationController?.setNavigationBarHidden(false, animated: false)
         }
         

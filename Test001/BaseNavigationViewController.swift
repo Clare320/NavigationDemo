@@ -7,8 +7,10 @@
 
 import UIKit
 
-class BaseNavigationViewController: UINavigationController, UINavigationControllerDelegate {
+class BaseNavigationViewController: UINavigationController, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
 
+    var panGestureRecongnizer: UIPanGestureRecognizer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -16,6 +18,22 @@ class BaseNavigationViewController: UINavigationController, UINavigationControll
         
 //        delegate = self
         interactivePopGestureRecognizer?.delegate = nil
+        
+        changeSystemInteractivePopGesture()
+    }
+    
+    func changeSystemInteractivePopGesture() {
+        let targets = interactivePopGestureRecognizer?.value(forKey: "targets") as! Array<NSObject>
+        let internalTarget = targets.first?.value(forKey: "target") as Any
+        
+        let action = Selector(("handleNavigationTransition:"))
+        
+        panGestureRecongnizer = UIPanGestureRecognizer()
+        panGestureRecongnizer?.delegate = self
+        panGestureRecongnizer?.addTarget(internalTarget, action: action)
+        interactivePopGestureRecognizer?.view?.addGestureRecognizer(panGestureRecongnizer!)
+
+        interactivePopGestureRecognizer?.isEnabled = false
     }
     
     override func pushViewController(_ viewController: UIViewController, animated: Bool) {
@@ -45,6 +63,10 @@ class BaseNavigationViewController: UINavigationController, UINavigationControll
 //            navigationController.setNavigationBarHidden(viewController.hideNavigaionBar, animated: animated)
 //        }
 //    }
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
     
     
     /*
